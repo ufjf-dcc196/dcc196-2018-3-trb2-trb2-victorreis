@@ -55,17 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnListarEventos = (Button) findViewById(R.id.btn_listar_eventos);
-        btnListarEventos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ListarEventosActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.main_recycle_view);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_todos_participantes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapterParticipante = new AdapterParticipante(Persistencia.participantes);
         recyclerView.setAdapter(adapterParticipante);

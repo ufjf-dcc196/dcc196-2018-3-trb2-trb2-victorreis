@@ -7,18 +7,18 @@
     tools:context=".MainActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_recycle_view"
+        android:id="@+id/rv_todos_eventos"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="150dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_cadastrar_participante"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_titulo_todos_eventos" />
 
     <Button
         android:id="@+id/btn_cadastrar_participante"
@@ -31,9 +31,9 @@
         android:text="Cadastrar Participante"
         app:layout_constraintBottom_toTopOf="@+id/btn_cadastrar_evento"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_recycle_view" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_todos_eventos" />
 
     <Button
         android:id="@+id/btn_cadastrar_evento"
@@ -44,25 +44,53 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Cadastrar Evento"
-        app:layout_constraintBottom_toTopOf="@+id/btn_listar_eventos"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_cadastrar_participante" />
 
-    <Button
-        android:id="@+id/btn_listar_eventos"
+    <TextView
+        android:id="@+id/txt_titulo_todos_eventos"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Listar Eventos"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="4dp"
+        android:text="Todos os Eventos"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/rv_todos_eventos"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_cadastrar_evento" />
+        app:layout_constraintTop_toBottomOf="@+id/rv_todos_participantes" />
+
+    <TextView
+        android:id="@+id/txt_titulo_todos_participantes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="Todos os Participantes"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/rv_todos_participantes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_todos_participantes"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_titulo_todos_eventos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_titulo_todos_participantes" />
 
 </android.support.constraint.ConstraintLayout>
