@@ -1,10 +1,14 @@
 package trab1.dcc196.ufjf.br.dcc192_2018_3_trb1_victorreis;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class CadastroEventoActivity extends AppCompatActivity {
 
@@ -26,11 +30,31 @@ public class CadastroEventoActivity extends AppCompatActivity {
         edtFacilitador = (EditText) findViewById(R.id.edt_facilitador);
         edtDescricaoTextual = (EditText) findViewById(R.id.edt_descricao_textual);
 
-        btnCadastrarEvento = (Button) findViewById(R.id.btn_cadastrar_participante);
+        btnCadastrarEvento = (Button) findViewById(R.id.btn_cadastrar_evento);
         btnCadastrarEvento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if (edtTitulo.getText() == null || "".equals(edtTitulo.getText().toString()) ||
+                        edtDia.getText() == null || "".equals(edtDia.getText().toString()) ||
+                        edtHora.getText() == null || "".equals(edtHora.getText().toString()) ||
+                        edtFacilitador.getText() == null || "".equals(edtFacilitador.getText().toString()) ||
+                        edtDescricaoTextual.getText() == null || "".equals(edtDescricaoTextual.getText().toString())
+                        ) {
+                    Toast t = Toast.makeText(getApplicationContext(), "ERRO: Preencher todos os campos.", Toast.LENGTH_LONG);
+                    t.show();
+                    return;
+                }
+
+                Intent intentCadastroEvento = new Intent();
+
+                intentCadastroEvento.putExtra(MainActivity.EVENTO_TITULO, edtTitulo.getText().toString());
+                intentCadastroEvento.putExtra(MainActivity.EVENTO_DIA, edtDia.getText().toString());
+                intentCadastroEvento.putExtra(MainActivity.EVENTO_HORA, edtHora.getText().toString());
+                intentCadastroEvento.putExtra(MainActivity.EVENTO_FACILITADOR, edtFacilitador.getText().toString());
+                intentCadastroEvento.putExtra(MainActivity.EVENTO_DESCRICAO_TEXTUAL, edtDescricaoTextual.getText().toString());
+                setResult(Activity.RESULT_OK, intentCadastroEvento);
+                finish();
             }
         });
     }
