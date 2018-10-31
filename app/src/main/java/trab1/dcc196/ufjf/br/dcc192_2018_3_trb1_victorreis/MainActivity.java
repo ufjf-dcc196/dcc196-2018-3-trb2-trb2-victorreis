@@ -1,5 +1,6 @@
 package trab1.dcc196.ufjf.br.dcc192_2018_3_trb1_victorreis;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCadastrarEvento;
     private Button btnListarEventos;
 
+    private static final int REQUEST_CADASTRO_PARTICIPANTE = 1;
+    private static final int REQUEST_CADASTRO_EVENTO = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
         btnCadastrarParticipante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this,CadastroParticipanteActivity.class);
+                startActivityForResult(intent, REQUEST_CADASTRO_PARTICIPANTE);
             }
         });
 
@@ -31,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         btnCadastrarEvento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this,CadastroParticipanteActivity.class);
+                startActivityForResult(intent, REQUEST_CADASTRO_PARTICIPANTE);
             }
         });
 
