@@ -10,17 +10,21 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
+    private RecyclerView rvTodosParticipantes;
+    private RecyclerView rvTodosEventos;
+
     private Button btnCadastrarParticipante;
     private Button btnCadastrarEvento;
     private Button btnListarEventos;
 
     private AdapterParticipante adapterParticipante;
+    private AdapterEvento adapterEvento;
 
     private static final int REQUEST_CADASTRO_PARTICIPANTE = 1;
     private static final int REQUEST_CADASTRO_EVENTO = 2;
 
     public static final String PARTICIPANTE_INDICE = "PARTICIPANTE_INDICE";
+    public static final String EVENTO_INDICE = "EVENTO_INDICE";
 
     public static final String PARTICIPANTE_NOME_COMPLETO = "PARTICIPANTE_NOME_COMPLETO";
     public static final String PARTICIPANTE_EMAIL = "PARTICIPANTE_EMAIL";
@@ -55,11 +59,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv_todos_participantes);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        rvTodosParticipantes = (RecyclerView) findViewById(R.id.rv_todos_participantes);
+        rvTodosParticipantes.setLayoutManager(new LinearLayoutManager(this));
         adapterParticipante = new AdapterParticipante(Persistencia.participantes);
-        recyclerView.setAdapter(adapterParticipante);
-
+        rvTodosParticipantes.setAdapter(adapterParticipante);
         adapterParticipante.setOnAdapterParticipanteClickListener(new AdapterParticipante.OnAdapterParticipanteClickListener() {
             @Override
             public void OnAdapterParticipanteClick(View view, int position) {
@@ -73,6 +76,28 @@ public class MainActivity extends AppCompatActivity {
                 Persistencia.participantes.get(position).getEventos().clear();
                 Persistencia.participantes.remove(position);
                 adapterParticipante.notifyItemRemoved(position);
+            }
+        });
+
+        rvTodosEventos = (RecyclerView) findViewById(R.id.rv_todos_eventos);
+        rvTodosEventos.setLayoutManager(new LinearLayoutManager(this));
+        adapterEvento = new AdapterEvento(Persistencia.eventos);
+        rvTodosEventos.setAdapter(adapterEvento);
+        adapterEvento.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
+            @Override
+            public void OnAdapterEventoClick(View view, int position) {
+                Intent intent = new Intent(MainActivity.this, ExibirDadosEventoActivity.class);
+                intent.putExtra(MainActivity.EVENTO_INDICE, position);
+                startActivity(intent);
+            }
+
+            @Override
+            public void OnAdapterEventoClickLong(View view, int position) {
+                for (Participante participante : Persistencia.participantes) {
+                    participante.getEventos().remove(Persistencia.eventos.get(position));
+                }
+                Persistencia.eventos.remove(position);
+                adapterEvento.notifyItemRemoved(position);
             }
         });
     }

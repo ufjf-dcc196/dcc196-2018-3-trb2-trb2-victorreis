@@ -17,12 +17,10 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
 
     public AdapterParticipante(List<Participante> participantes) {
         this.participantes = participantes;
-
     }
 
     public interface OnAdapterParticipanteClickListener {
         void OnAdapterParticipanteClick(View view, int position);
-
         void OnAdapterParticipanteClickLong(View view, int position);
     }
 
@@ -35,7 +33,7 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
     public AdapterParticipante.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.main_layout_item, viewGroup, false);
+        View view = layoutInflater.inflate(R.layout.participante_layout_item, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
