@@ -71,11 +71,31 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == MainActivity.REQUEST_CADASTRO_PARTICIPANTE) {
+            Bundle bndResultado = data.getExtras();
+
+            String nomeCompleto = bndResultado.getString(MainActivity.PARTICIPANTE_NOME_COMPLETO);
+            String email = bndResultado.getString(MainActivity.PARTICIPANTE_EMAIL);
+            String cpf = bndResultado.getString(MainActivity.PARTICIPANTE_CPF);
+
+            Participante participante = new Participante(nomeCompleto, email, cpf);
+            Persistencia.participantes.add(participante);
+//            adapterParticipante.notifyDataSetChanged();
 
         } else if (requestCode == MainActivity.REQUEST_CADASTRO_EVENTO) {
+            Bundle bndResultado = data.getExtras();
+
+            String titulo = bndResultado.getString(MainActivity.EVENTO_TITULO);
+            String dia = bndResultado.getString(MainActivity.EVENTO_DIA);
+            String hora = bndResultado.getString(MainActivity.EVENTO_HORA);
+            String facilitador = bndResultado.getString(MainActivity.EVENTO_FACILITADOR);
+            String descricaoTextual = bndResultado.getString(MainActivity.EVENTO_DESCRICAO_TEXTUAL);
+
+            Evento evento = new Evento(titulo, dia, hora, facilitador, descricaoTextual);
+            Persistencia.eventos.add(evento);
+//            adapterEvento.notifyDataSetChanged();
 
         } else if (requestCode == MainActivity.REQUEST_LISTAR_EVENTOS) {
-            
+
         }
     }
 }
