@@ -22,10 +22,11 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
 
     public interface OnAdapterParticipanteClickListener {
         void OnAdapterParticipanteClick(View view, int position);
+
         void OnAdapterParticipanteClickLong(View view, int position);
     }
 
-    public void setOnAdapterParticipanteClickListener(OnAdapterParticipanteClickListener listener){
+    public void setOnAdapterParticipanteClickListener(OnAdapterParticipanteClickListener listener) {
         this.listener = listener;
     }
 
@@ -61,7 +62,7 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
                 public void onClick(View v) {
                     if (listener != null) {
                         int adapterPosition = getAdapterPosition();
-                        if(adapterPosition != RecyclerView.NO_POSITION){
+                        if (adapterPosition != RecyclerView.NO_POSITION) {
                             listener.OnAdapterParticipanteClick(v, adapterPosition);
                         }
                     }
@@ -71,9 +72,9 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (listener != null){
+                    if (listener != null) {
                         int adapterPosition = getAdapterPosition();
-                        if(adapterPosition != RecyclerView.NO_POSITION){
+                        if (adapterPosition != RecyclerView.NO_POSITION) {
                             listener.OnAdapterParticipanteClickLong(v, adapterPosition);
                         }
                     }
@@ -86,7 +87,7 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
         public void onClick(View v) {
             if (listener != null) {
                 int adapterPosition = getAdapterPosition();
-                if(adapterPosition != RecyclerView.NO_POSITION){
+                if (adapterPosition != RecyclerView.NO_POSITION) {
                     listener.OnAdapterParticipanteClick(v, adapterPosition);
                 }
             }
@@ -94,9 +95,9 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
 
         @Override
         public boolean onLongClick(View v) {
-            if (listener != null){
+            if (listener != null) {
                 int adapterPosition = getAdapterPosition();
-                if(adapterPosition != RecyclerView.NO_POSITION){
+                if (adapterPosition != RecyclerView.NO_POSITION) {
                     listener.OnAdapterParticipanteClickLong(v, adapterPosition);
                 }
             }
