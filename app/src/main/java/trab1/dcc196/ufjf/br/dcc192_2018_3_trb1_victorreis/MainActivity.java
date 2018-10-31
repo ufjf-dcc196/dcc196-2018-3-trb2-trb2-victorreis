@@ -10,14 +10,17 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView rv;
+    private RecyclerView recyclerView;
     private Button btnCadastrarParticipante;
     private Button btnCadastrarEvento;
     private Button btnListarEventos;
 
+    private AdapterParticipante adapterParticipante;
+
     private static final int REQUEST_CADASTRO_PARTICIPANTE = 1;
     private static final int REQUEST_CADASTRO_EVENTO = 2;
-    private static final int REQUEST_LISTAR_EVENTOS = 3;
+
+    public static final String PARTICIPANTE_INDICE = "PARTICIPANTE_INDICE";
 
     public static final String PARTICIPANTE_NOME_COMPLETO = "PARTICIPANTE_NOME_COMPLETO";
     public static final String PARTICIPANTE_EMAIL = "PARTICIPANTE_EMAIL";
@@ -57,13 +60,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,ListarEventosActivity.class);
-                startActivityForResult(intent, REQUEST_LISTAR_EVENTOS);
+                startActivity(intent);
             }
         });
 
 
-        rv = (RecyclerView) findViewById(R.id.main_recycle_view);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = (RecyclerView) findViewById(R.id.main_recycle_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapterParticipante = new AdapterParticipante(Persistencia.participantes);
+        recyclerView.setAdapter(adapterParticipante);
+
+        adapterParticipante.setOnAdapterParticipanteClickListener(new AdapterParticipante.OnAdapterParticipanteClickListener() {
+            @Override
+            public void OnAdapterParticipanteClick(View view, int position) {
+                Intent intent = new Intent(MainActivity.this, ExibirDadosParticipanteActivity.class);
+                intent.putExtra(MainActivity.PARTICIPANTE_INDICE, position);
+                startActivity(intent);
+            }
+
+            @Override
+            public void OnAdapterParticipanteClickLong(View view, int position) {
+                Persistencia.participantes.get(position).getEventos().clear();
+                Persistencia.participantes.remove(position);
+                adapterParticipante.notifyItemRemoved(position);
+            }
+        });
     }
 
     @Override
@@ -79,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
             Participante participante = new Participante(nomeCompleto, email, cpf);
             Persistencia.participantes.add(participante);
-//            adapterParticipante.notifyDataSetChanged();
+            adapterParticipante.notifyDataSetChanged();
 
         } else if (requestCode == MainActivity.REQUEST_CADASTRO_EVENTO) {
             Bundle bndResultado = data.getExtras();
@@ -92,9 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
             Evento evento = new Evento(titulo, dia, hora, facilitador, descricaoTextual);
             Persistencia.eventos.add(evento);
-//            adapterEvento.notifyDataSetChanged();
-
-        } else if (requestCode == MainActivity.REQUEST_LISTAR_EVENTOS) {
 
         }
     }
