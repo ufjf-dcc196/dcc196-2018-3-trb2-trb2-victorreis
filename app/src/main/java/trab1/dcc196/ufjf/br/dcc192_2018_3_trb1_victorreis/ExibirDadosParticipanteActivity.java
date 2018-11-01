@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
     private RecyclerView rvParticipandoDosEventos;
     private RecyclerView rvEventosRestantes;
-    private AdapterEvento adapterEvento;
+    private AdapterEvento adapterParticipandoDosEventos;
+    private AdapterEvento adapterEventosRestantes;
 
     private static final int REQUEST_EDITAR_PARTICIPANTE = 1;
 
@@ -33,6 +35,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
     private int participanteIndice;
     private Participante participante;
+    private List<Evento> eventosRestantes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,54 +68,55 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
         rvParticipandoDosEventos = (RecyclerView) findViewById(R.id.rv_participando_dos_eventos);
         rvParticipandoDosEventos.setLayoutManager(new LinearLayoutManager(this));
-        adapterEvento = new AdapterEvento(participante.getEventos());
-        rvParticipandoDosEventos.setAdapter(adapterEvento);
-        adapterEvento.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
+        adapterParticipandoDosEventos = new AdapterEvento(participante.getEventos());
+        rvParticipandoDosEventos.setAdapter(adapterParticipandoDosEventos);
+        adapterParticipandoDosEventos.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
             @Override
             public void OnAdapterEventoClick(View view, int position) {
-//                Intent intent = new Intent(ExibirDadosParticipanteActivity.this, ExibirDadosEventoActivity.class);
-//                intent.putExtra(MainActivity.EVENTO_INDICE, position);
-//                startActivity(intent);
+
             }
 
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
-//                for (Participante participante : Persistencia.getInstanceParticipantes()) {
-//                    participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
-//                }
-//                Persistencia.getInstanceEventos().remove(position);
-//                adapterEvento.notifyItemRemoved(position);
+                Evento evento = participante.getEventos().get(position);
+                Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().remove(evento);
+                eventosRestantes.add(evento);
+                adapterParticipandoDosEventos.notifyDataSetChanged();
+                adapterEventosRestantes.notifyDataSetChanged();
+
+                Toast t = Toast.makeText(getApplicationContext(), "Desinscrito do evento.", Toast.LENGTH_LONG);
+                t.show();
             }
         });
 
         rvEventosRestantes = (RecyclerView) findViewById(R.id.rv_eventos_restantes);
         rvEventosRestantes.setLayoutManager(new LinearLayoutManager(this));
-        List<Evento> eventosRestantes = new ArrayList<>();
+        eventosRestantes = new ArrayList<>();
         for (Evento evento : Persistencia.getInstanceEventos()) {
             if (!participante.getEventos().contains(evento)) {
                 eventosRestantes.add(evento);
             }
         }
-        adapterEvento = new AdapterEvento(eventosRestantes);
-        rvEventosRestantes.setAdapter(adapterEvento);
-        adapterEvento.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
+        adapterEventosRestantes = new AdapterEvento(eventosRestantes);
+        rvEventosRestantes.setAdapter(adapterEventosRestantes);
+        adapterEventosRestantes.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
             @Override
             public void OnAdapterEventoClick(View view, int position) {
-//                Intent intent = new Intent(ExibirDadosParticipanteActivity.this, ExibirDadosEventoActivity.class);
-//                intent.putExtra(MainActivity.EVENTO_INDICE, position);
-//                startActivity(intent);
+
             }
 
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
-//                for (Participante participante : Persistencia.getInstanceParticipantes()) {
-//                    participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
-//                }
-//                Persistencia.getInstanceEventos().remove(position);
-//                adapterEvento.notifyItemRemoved(position);
+                Evento evento = eventosRestantes.get(position);
+                eventosRestantes.remove(evento);
+                Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().add(evento);
+                adapterParticipandoDosEventos.notifyDataSetChanged();
+                adapterEventosRestantes.notifyDataSetChanged();
+
+                Toast t = Toast.makeText(getApplicationContext(), "Inscrito no evento.", Toast.LENGTH_LONG);
+                t.show();
             }
         });
-
     }
 
     @Override

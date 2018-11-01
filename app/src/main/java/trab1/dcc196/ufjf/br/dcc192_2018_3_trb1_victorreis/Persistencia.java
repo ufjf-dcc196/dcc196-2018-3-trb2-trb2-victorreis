@@ -24,6 +24,7 @@ public class Persistencia {
 
             eventos.add(new Evento("Título 1", "11/11/2011", "23:23", "Fulano", "Bla bla bla bla bla bla bla bla bla"));
             eventos.add(new Evento("Título 2", "22/11/2000", "11:11", "Beltrano", "Bla bla bla bla bla bla bla bla bla"));
+            eventos.add(new Evento("Título 3", "01/01/2001", "11:11", "Beltrano", "Bla bla bla bla bla bla bla bla bla"));
         }
         return eventos;
     }
