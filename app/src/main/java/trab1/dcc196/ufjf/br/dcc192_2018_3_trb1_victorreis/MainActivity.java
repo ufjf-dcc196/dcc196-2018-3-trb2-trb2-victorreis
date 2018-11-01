@@ -131,4 +131,11 @@ public class MainActivity extends AppCompatActivity {
             adapterEvento.notifyDataSetChanged();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapterParticipante.notifyDataSetChanged();
+        adapterEvento.notifyDataSetChanged();
+    }
 }

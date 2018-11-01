@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
     private TextView txtNomeCompleto;
@@ -20,6 +23,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
     private RecyclerView rvParticipandoDosEventos;
     private RecyclerView rvEventosRestantes;
+    private AdapterEvento adapterEvento;
 
     private static final int REQUEST_EDITAR_PARTICIPANTE = 1;
 
@@ -61,9 +65,53 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
         rvParticipandoDosEventos = (RecyclerView) findViewById(R.id.rv_participando_dos_eventos);
         rvParticipandoDosEventos.setLayoutManager(new LinearLayoutManager(this));
+        adapterEvento = new AdapterEvento(participante.getEventos());
+        rvParticipandoDosEventos.setAdapter(adapterEvento);
+        adapterEvento.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
+            @Override
+            public void OnAdapterEventoClick(View view, int position) {
+//                Intent intent = new Intent(ExibirDadosParticipanteActivity.this, ExibirDadosEventoActivity.class);
+//                intent.putExtra(MainActivity.EVENTO_INDICE, position);
+//                startActivity(intent);
+            }
+
+            @Override
+            public void OnAdapterEventoClickLong(View view, int position) {
+//                for (Participante participante : Persistencia.getInstanceParticipantes()) {
+//                    participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
+//                }
+//                Persistencia.getInstanceEventos().remove(position);
+//                adapterEvento.notifyItemRemoved(position);
+            }
+        });
 
         rvEventosRestantes = (RecyclerView) findViewById(R.id.rv_eventos_restantes);
         rvEventosRestantes.setLayoutManager(new LinearLayoutManager(this));
+        List<Evento> eventosRestantes = new ArrayList<>();
+        for (Evento evento : Persistencia.getInstanceEventos()) {
+            if (!participante.getEventos().contains(evento)) {
+                eventosRestantes.add(evento);
+            }
+        }
+        adapterEvento = new AdapterEvento(eventosRestantes);
+        rvEventosRestantes.setAdapter(adapterEvento);
+        adapterEvento.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
+            @Override
+            public void OnAdapterEventoClick(View view, int position) {
+//                Intent intent = new Intent(ExibirDadosParticipanteActivity.this, ExibirDadosEventoActivity.class);
+//                intent.putExtra(MainActivity.EVENTO_INDICE, position);
+//                startActivity(intent);
+            }
+
+            @Override
+            public void OnAdapterEventoClickLong(View view, int position) {
+//                for (Participante participante : Persistencia.getInstanceParticipantes()) {
+//                    participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
+//                }
+//                Persistencia.getInstanceEventos().remove(position);
+//                adapterEvento.notifyItemRemoved(position);
+            }
+        });
 
     }
 
@@ -81,6 +129,14 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
             participante.setNomeCompleto(nomeCompleto);
             participante.setEmail(email);
             participante.setCpf(cpf);
+
+            Persistencia.getInstanceParticipantes().get(participanteIndice).setNomeCompleto(nomeCompleto);
+            Persistencia.getInstanceParticipantes().get(participanteIndice).setEmail(email);
+            Persistencia.getInstanceParticipantes().get(participanteIndice).setCpf(cpf);
+
+            txtNomeCompleto.setText(nomeCompleto);
+            txtEmail.setText(email);
+            txtCPF.setText(cpf);
         }
     }
 }
