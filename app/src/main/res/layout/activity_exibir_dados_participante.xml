@@ -7,20 +7,6 @@
     tools:context=".ExibirDadosParticipanteActivity">
 
     <TextView
-        android:id="@+id/txt_nome_completo_titulo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:text="Nome Completo:"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/txt_nome_completo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/txt_nome_completo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -31,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@+id/txt_email_titulo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_nome_completo_titulo" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_nome_completo" />
 
     <TextView
         android:id="@+id/txt_email_titulo"
@@ -97,6 +83,7 @@
         android:text="Editar Participante"
         app:layout_constraintBottom_toTopOf="@+id/txt_participando_dos_eventos_titulo"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_cpf" />
 
@@ -158,5 +145,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_eventos_restantes_titulo" />
+
+    <TextView
+        android:id="@+id/txt_nome_completo_titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Nome Completo:"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txt_nome_completo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
