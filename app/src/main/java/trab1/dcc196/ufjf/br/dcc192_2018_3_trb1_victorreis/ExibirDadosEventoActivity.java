@@ -24,7 +24,7 @@ public class ExibirDadosEventoActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         Bundle bundleResult = intent.getExtras();
         eventoIndice = bundleResult.getInt(MainActivity.EVENTO_INDICE);
-        evento = Persistencia.eventos.get(eventoIndice);
+        evento = Persistencia.getInstanceEventos().get(eventoIndice);
 
         txtTitulo = (TextView) findViewById(R.id.txt_titulo);
         txtTitulo.setText(evento.getTitulo());

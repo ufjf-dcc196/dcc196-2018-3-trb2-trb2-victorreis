@@ -54,7 +54,7 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
         public ViewHolder(View itemView) {
             super(itemView);
 
-            txtTitulo = itemView.findViewById(R.id.txt_nome_completo);
+            txtTitulo = itemView.findViewById(R.id.txt_titulo);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
