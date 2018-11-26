@@ -1,5 +1,6 @@
 package trab1.dcc196.ufjf.br.dcc192_2018_3_trb1_victorreis;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         rvTodosParticipantes = (RecyclerView) findViewById(R.id.rv_todos_participantes);
         rvTodosParticipantes.setLayoutManager(new LinearLayoutManager(this));
-        adapterParticipante = new AdapterParticipante(Persistencia.getInstanceParticipantes());
+        adapterParticipante = new AdapterParticipante(Persistencia.getInstance(getApplicationContext()).selectAllParticipantes());
         rvTodosParticipantes.setAdapter(adapterParticipante);
         adapterParticipante.setOnAdapterParticipanteClickListener(new AdapterParticipante.OnAdapterParticipanteClickListener() {
             @Override
@@ -73,15 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void OnAdapterParticipanteClickLong(View view, int position) {
-                Persistencia.getInstanceParticipantes().get(position).getEventos().clear();
-                Persistencia.getInstanceParticipantes().remove(position);
+//                Persistencia.getInstanceParticipantes().get(position).getEventos().clear();
+//                Persistencia.getInstanceParticipantes().remove(position);
                 adapterParticipante.notifyItemRemoved(position);
             }
         });
 
         rvTodosEventos = (RecyclerView) findViewById(R.id.rv_todos_eventos);
         rvTodosEventos.setLayoutManager(new LinearLayoutManager(this));
-        adapterEvento = new AdapterEvento(Persistencia.getInstanceEventos());
+        adapterEvento = new AdapterEvento(Persistencia.getInstance(getApplicationContext()).selectAllEventos());
         rvTodosEventos.setAdapter(adapterEvento);
         adapterEvento.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
             @Override
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
-                for (Participante participante : Persistencia.getInstanceParticipantes()) {
+                for (Participante participante : Persistencia.getInstance(getApplicationContext()).selectAllParticipantes()) {
                     participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
                 }
                 Persistencia.getInstanceEventos().remove(position);
