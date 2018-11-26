@@ -15,6 +15,17 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
     private List<Participante> participantes = new ArrayList<>();
     private OnAdapterParticipanteClickListener listener;
 
+//    private Cursor cursor;
+//
+//    public AdapterParticipante(Cursor c){
+//        cursor = c;
+//    }
+//
+//    public void setCursor(Cursor c){
+//        cursor = c;
+//        notifyDataSetChanged();
+//    }
+
     public AdapterParticipante(List<Participante> participantes) {
         this.participantes = participantes;
     }

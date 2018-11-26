@@ -15,6 +15,17 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
     private List<Evento> eventos = new ArrayList<>();
     private OnAdapterEventoClickListener listener;
 
+//    private Cursor cursor;
+//
+//    public AdapterParticipante(Cursor c){
+//        cursor = c;
+//    }
+//
+//    public void setCursor(Cursor c){
+//        cursor = c;
+//        notifyDataSetChanged();
+//    }
+
     public AdapterEvento(List<Evento> eventos) {
         this.eventos = eventos;
     }

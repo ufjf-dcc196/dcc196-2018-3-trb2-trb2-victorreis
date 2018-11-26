@@ -10,13 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView rvTodosParticipantes;
     private RecyclerView rvTodosEventos;
 
     private Button btnCadastrarParticipante;
     private Button btnCadastrarEvento;
-    private Button btnListarEventos;
+    private Button btnInserirResetarDadosIniciais;
 
     private AdapterParticipante adapterParticipante;
     private AdapterEvento adapterEvento;
@@ -60,6 +62,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnInserirResetarDadosIniciais = (Button) findViewById(R.id.btn_inserir_resetar_dados_iniciais);
+        btnInserirResetarDadosIniciais.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Persistencia.getInstance(getApplicationContext()).inserirResetarDadosIniciais();
+
+            }
+        });
+
         rvTodosParticipantes = (RecyclerView) findViewById(R.id.rv_todos_participantes);
         rvTodosParticipantes.setLayoutManager(new LinearLayoutManager(this));
         adapterParticipante = new AdapterParticipante(Persistencia.getInstance(getApplicationContext()).selectAllParticipantes());
@@ -95,9 +106,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
                 for (Participante participante : Persistencia.getInstance(getApplicationContext()).selectAllParticipantes()) {
-                    participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
+                    //participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
                 }
-                Persistencia.getInstanceEventos().remove(position);
+                //Persistencia.getInstanceEventos().remove(position);
                 adapterEvento.notifyItemRemoved(position);
             }
         });
@@ -115,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             String cpf = bndResultado.getString(MainActivity.PARTICIPANTE_CPF);
 
             Participante participante = new Participante(nomeCompleto, email, cpf);
-            Persistencia.getInstanceParticipantes().add(participante);
+            //Persistencia.getInstanceParticipantes().add(participante);
             adapterParticipante.notifyDataSetChanged();
 
         } else if (requestCode == MainActivity.REQUEST_CADASTRO_EVENTO) {
@@ -128,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             String descricaoTextual = bndResultado.getString(MainActivity.EVENTO_DESCRICAO_TEXTUAL);
 
             Evento evento = new Evento(titulo, dia, hora, facilitador, descricaoTextual);
-            Persistencia.getInstanceEventos().add(evento);
+            //Persistencia.getInstanceEventos().add(evento);
             adapterEvento.notifyDataSetChanged();
         }
     }

@@ -33,24 +33,24 @@ public class Trabalho3Contract {
     }
 
     public static final String SQL_CREATE_PARTICIPANTE = "CREATE TABLE " + Participante.TABLE_NAME + " (" +
-            Participante._ID + INT_TYPE + " PRIMARY KEY AUTOINCREMENT" + SEP +
+            Participante._ID + INT_TYPE + " PRIMARY KEY AUTOINCREMENT " + SEP +
             Participante.COLUMN_NAME_NOME_COMPLETO + TEXT_TYPE + SEP +
             Participante.COLUMN_NAME_EMAIL + TEXT_TYPE + SEP +
             Participante.COLUMN_NAME_CPF + TEXT_TYPE + ")";
-    public static final String SQL_DROP_PARTICIPANTE = "DROP TABLE IF EXISTS" + Participante.TABLE_NAME;
+    public static final String SQL_DROP_PARTICIPANTE = "DROP TABLE IF EXISTS " + Participante.TABLE_NAME;
 
     public static final String SQL_CREATE_EVENTO = "CREATE TABLE " + Evento.TABLE_NAME + " (" +
-            Evento._ID + INT_TYPE + " PRIMARY KEY AUTOINCREMENT" + SEP +
+            Evento._ID + INT_TYPE + " PRIMARY KEY AUTOINCREMENT " + SEP +
             Evento.COLUMN_NAME_TITULO + TEXT_TYPE + SEP +
             Evento.COLUMN_NAME_DIA + TEXT_TYPE + SEP +
             Evento.COLUMN_NAME_HORA + TEXT_TYPE + SEP +
             Evento.COLUMN_NAME_FACILITADOR + TEXT_TYPE + SEP +
             Evento.COLUMN_NAME_DESCRICAO_TEXTUAL + TEXT_TYPE + ")";
-    public static final String SQL_DROP_EVENTO = "DROP TABLE IF EXISTS" + Evento.TABLE_NAME;
+    public static final String SQL_DROP_EVENTO = "DROP TABLE IF EXISTS " + Evento.TABLE_NAME;
 
     public static final String SQL_CREATE_PARTICIPANTE_EVENTO = "CREATE TABLE " + ParticipanteEvento.TABLE_NAME + " (" +
-            ParticipanteEvento._ID + INT_TYPE + " PRIMARY KEY AUTOINCREMENT" + SEP +
+            ParticipanteEvento._ID + INT_TYPE + " PRIMARY KEY AUTOINCREMENT " + SEP +
             ParticipanteEvento.COLUMN_NAME_PARTICIPANTE_ID + INT_TYPE + SEP +
             ParticipanteEvento.COLUMN_NAME_EVENTO_ID + INT_TYPE + ")";
-    public static final String SQL_DROP_PARTICIPANTE_EVENTO = "DROP TABLE IF EXISTS" + ParticipanteEvento.TABLE_NAME;
+    public static final String SQL_DROP_PARTICIPANTE_EVENTO = "DROP TABLE IF EXISTS " + ParticipanteEvento.TABLE_NAME;
 }

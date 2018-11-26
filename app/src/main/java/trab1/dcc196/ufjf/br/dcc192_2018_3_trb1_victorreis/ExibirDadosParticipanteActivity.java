@@ -45,7 +45,8 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         Bundle bundleResult = intent.getExtras();
         participanteIndice = bundleResult.getInt(MainActivity.PARTICIPANTE_INDICE);
-        participante = Persistencia.getInstanceParticipantes().get(participanteIndice);
+        //participante = Persistencia.getInstanceParticipantes().get(participanteIndice);
+        participante = new Participante();
 
         txtNomeCompleto = (TextView) findViewById(R.id.txt_nome_completo);
         txtNomeCompleto.setText(participante.getNomeCompleto());
@@ -79,7 +80,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
                 Evento evento = participante.getEventos().get(position);
-                Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().remove(evento);
+                //Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().remove(evento);
                 eventosRestantes.add(evento);
                 adapterParticipandoDosEventos.notifyDataSetChanged();
                 adapterEventosRestantes.notifyDataSetChanged();
@@ -92,7 +93,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
         rvEventosRestantes = (RecyclerView) findViewById(R.id.rv_eventos_restantes);
         rvEventosRestantes.setLayoutManager(new LinearLayoutManager(this));
         eventosRestantes = new ArrayList<>();
-        for (Evento evento : Persistencia.getInstanceEventos()) {
+        for (Evento evento : Persistencia.getInstance(getApplicationContext()).selectAllEventos()) {
             if (!participante.getEventos().contains(evento)) {
                 eventosRestantes.add(evento);
             }
@@ -109,7 +110,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
             public void OnAdapterEventoClickLong(View view, int position) {
                 Evento evento = eventosRestantes.get(position);
                 eventosRestantes.remove(evento);
-                Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().add(evento);
+                //Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().add(evento);
                 adapterParticipandoDosEventos.notifyDataSetChanged();
                 adapterEventosRestantes.notifyDataSetChanged();
 
@@ -134,9 +135,9 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
             participante.setEmail(email);
             participante.setCpf(cpf);
 
-            Persistencia.getInstanceParticipantes().get(participanteIndice).setNomeCompleto(nomeCompleto);
-            Persistencia.getInstanceParticipantes().get(participanteIndice).setEmail(email);
-            Persistencia.getInstanceParticipantes().get(participanteIndice).setCpf(cpf);
+            //Persistencia.getInstanceParticipantes().get(participanteIndice).setNomeCompleto(nomeCompleto);
+            //Persistencia.getInstanceParticipantes().get(participanteIndice).setEmail(email);
+            //Persistencia.getInstanceParticipantes().get(participanteIndice).setCpf(cpf);
 
             txtNomeCompleto.setText(nomeCompleto);
             txtEmail.setText(email);

@@ -29,7 +29,8 @@ public class EditarParticipanteActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         Bundle bundleResult = intent.getExtras();
         participanteIndice = bundleResult.getInt(MainActivity.PARTICIPANTE_INDICE);
-        participante = Persistencia.getInstanceParticipantes().get(participanteIndice);
+        //participante = Persistencia.getInstanceParticipantes().get(participanteIndice);
+        participante = new Participante();
 
         edtNomeCompleto = (EditText) findViewById(R.id.edt_nome_completo);
         edtNomeCompleto.setText(participante.getNomeCompleto());

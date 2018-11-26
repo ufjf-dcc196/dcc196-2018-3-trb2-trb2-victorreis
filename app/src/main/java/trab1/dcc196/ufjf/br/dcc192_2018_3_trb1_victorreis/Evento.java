@@ -12,8 +12,7 @@ public class Evento {
     public Evento() {
     }
 
-    public Evento(Integer id, String titulo, String dia, String hora, String facilitador, String descricaoTextual) {
-        this.id = id;
+    public Evento(String titulo, String dia, String hora, String facilitador, String descricaoTextual) {
         this.titulo = titulo;
         this.dia = dia;
         this.hora = hora;

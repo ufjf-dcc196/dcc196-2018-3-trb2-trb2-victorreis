@@ -20,6 +20,15 @@ public class Persistencia {
         db = trabalho3DBHelper.getWritableDatabase();
 
         inserirDadosIniciais();
+        inserirDadosIniciais();
+        inserirDadosIniciais();
+    }
+
+    public static Persistencia getInstance(Context context){
+        if (instance == null) {
+            instance = new Persistencia(context);
+        }
+        return instance;
     }
 
     private void inserirDadosIniciais() {
@@ -77,11 +86,14 @@ public class Persistencia {
         insertEvento(evento);
     }
 
-    public static Persistencia getInstance(Context context){
-        if (instance == null) {
-            instance = new Persistencia(context);
-        }
-        return instance;
+    public void inserirResetarDadosIniciais() {
+        db.execSQL(Trabalho3Contract.SQL_DROP_PARTICIPANTE);
+        db.execSQL(Trabalho3Contract.SQL_DROP_EVENTO);
+        db.execSQL(Trabalho3Contract.SQL_DROP_PARTICIPANTE_EVENTO);
+        db.execSQL(Trabalho3Contract.SQL_CREATE_PARTICIPANTE);
+        db.execSQL(Trabalho3Contract.SQL_CREATE_EVENTO);
+        db.execSQL(Trabalho3Contract.SQL_CREATE_PARTICIPANTE_EVENTO);
+        inserirDadosIniciais();
     }
 
     public Participante insertParticipante(Participante participante) {
@@ -126,15 +138,15 @@ public class Persistencia {
         int indiceParticipanteEmail = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL);
         int indiceParticipanteCPF = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_CPF);
 
-        if (!c.isNull(indiceParticipanteNomeCompleto)) {
-            while (c.moveToNext()) {
+        if (c != null && c.moveToFirst()) {
+            do {
                 participante = new Participante();
                 participante.setNomeCompleto(c.getString(indiceParticipanteNomeCompleto));
                 participante.setEmail(c.getString(indiceParticipanteEmail));
                 participante.setCpf(c.getString(indiceParticipanteCPF));
 
                 participantes.add(participante);
-            }
+            } while (c.moveToNext());
         }
 
         return participantes;
@@ -162,8 +174,8 @@ public class Persistencia {
         int indiceEventoFacilitador = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR);
         int indiceEventoDescricaoTextual = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL);
 
-        if (!c.isNull(indiceEventoTitulo)) {
-            while (c.moveToNext()) {
+        if (c != null && c.moveToFirst()) {
+            do {
                 evento = new Evento();
                 evento.setTitulo(c.getString(indiceEventoTitulo));
                 evento.setDia(c.getString(indiceEventoDia));
@@ -172,33 +184,9 @@ public class Persistencia {
                 evento.setDescricaoTextual(c.getString(indiceEventoDescricaoTextual));
 
                 eventos.add(evento);
-            }
+            } while (c.moveToNext());
         }
 
         return eventos;
     }
-
-    //private static List<Participante> participantes;
-    //private static List<Evento> eventos;
-
-//    public static List<Participante> getInstanceParticipantes() {
-//        if (participantes == null) {
-//            participantes = new ArrayList<>();
-//
-//            participantes.add(new Participante("Fulano de Bla bla bla", "fulaninho@uol.com.br", "123.234.345.56"));
-//            participantes.add(new Participante("Beltrano de Ble ble ble", "bel.trano@bol.com.br", "089.987.867.76"));
-//        }
-//        return participantes;
-//    }
-
-//    public static List<Evento> getInstanceEventos() {
-//        if (eventos == null) {
-//            eventos = new ArrayList<>();
-//
-//            eventos.add(new Evento("Título 1", "11/11/2011", "23:23", "Fulano", "Bla bla bla bla bla bla bla bla bla"));
-//            eventos.add(new Evento("Título 2", "22/11/2000", "11:11", "Beltrano", "Bla bla bla bla bla bla bla bla bla"));
-//            eventos.add(new Evento("Título 3", "01/01/2001", "11:11", "Beltranovvdd", "Bla bla bla bla bla bla bla bla bla"));
-//        }
-//        return eventos;
-//    }
 }

@@ -15,8 +15,7 @@ public class Participante {
         this.eventos = new ArrayList<>();
     }
 
-    public Participante(Integer id, String nomeCompleto, String email, String cpf) {
-        this.id = id;
+    public Participante(String nomeCompleto, String email, String cpf) {
         this.nomeCompleto = nomeCompleto;
         this.email = email;
         this.cpf = cpf;
