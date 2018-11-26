@@ -19,10 +19,6 @@ public class Persistencia {
     private Persistencia(Context context) {
         trabalho3DBHelper = new Trabalho3DBHelper(context);
         db = trabalho3DBHelper.getWritableDatabase();
-
-        inserirDadosIniciais();
-        inserirDadosIniciais();
-        inserirDadosIniciais();
     }
 
     public static Persistencia getInstance(Context context){
@@ -133,7 +129,7 @@ public class Persistencia {
         return db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", args, null, null, sort);
     }
 
-    public List<Participante> selectAllParticipantes() {
+    public ArrayList<Participante> selectAllParticipantes() {
         ArrayList<Participante> participantes = new ArrayList<>();
         Participante participante;
 
@@ -147,6 +143,7 @@ public class Persistencia {
         String[] args = {};
         Cursor c = db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", args, null, null, sort);
 
+        int indiceParticipanteID = c.getColumnIndexOrThrow(Trabalho3Contract.Participante._ID);
         int indiceParticipanteNomeCompleto = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO);
         int indiceParticipanteEmail = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL);
         int indiceParticipanteCPF = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_CPF);
@@ -154,9 +151,10 @@ public class Persistencia {
         if (c != null && c.moveToFirst()) {
             do {
                 participante = new Participante();
-                participante.setNomeCompleto(c.getString(indiceParticipanteNomeCompleto));
-                participante.setEmail(c.getString(indiceParticipanteEmail));
-                participante.setCpf(c.getString(indiceParticipanteCPF));
+                participante.setId(c.getInt(indiceParticipanteID))
+                        .setNomeCompleto(c.getString(indiceParticipanteNomeCompleto))
+                        .setEmail(c.getString(indiceParticipanteEmail))
+                        .setCpf(c.getString(indiceParticipanteCPF));
 
                 participantes.add(participante);
             } while (c.moveToNext());
@@ -207,7 +205,7 @@ public class Persistencia {
         return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
     }
 
-    public List<Evento> selectAllEventos() {
+    public ArrayList<Evento> selectAllEventos() {
         ArrayList<Evento> eventos = new ArrayList<>();
         Evento evento;
 
@@ -223,6 +221,7 @@ public class Persistencia {
         String[] args = {};
         Cursor c = db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
 
+        int indiceEventoID = c.getColumnIndexOrThrow(Trabalho3Contract.Evento._ID);
         int indiceEventoTitulo = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_TITULO);
         int indiceEventoDia = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_DIA);
         int indiceEventoHora = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_HORA);
@@ -232,11 +231,12 @@ public class Persistencia {
         if (c != null && c.moveToFirst()) {
             do {
                 evento = new Evento();
-                evento.setTitulo(c.getString(indiceEventoTitulo));
-                evento.setDia(c.getString(indiceEventoDia));
-                evento.setHora(c.getString(indiceEventoHora));
-                evento.setFacilitador(c.getString(indiceEventoFacilitador));
-                evento.setDescricaoTextual(c.getString(indiceEventoDescricaoTextual));
+                evento.setId(c.getInt(indiceEventoID))
+                        .setTitulo(c.getString(indiceEventoTitulo))
+                        .setDia(c.getString(indiceEventoDia))
+                        .setHora(c.getString(indiceEventoHora))
+                        .setFacilitador(c.getString(indiceEventoFacilitador))
+                        .setDescricaoTextual(c.getString(indiceEventoDescricaoTextual));
 
                 eventos.add(evento);
             } while (c.moveToNext());
@@ -259,5 +259,73 @@ public class Persistencia {
         db.delete(Trabalho3Contract.Evento.TABLE_NAME,select,selectArgs);
         Log.i("DBINFO", "DEL titulo: " + titulo);
         return true;
+    }
+
+    public Participante selectParticipanteById(Integer id) {
+        String[] visao = {
+                Trabalho3Contract.Participante._ID,
+                Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO,
+                Trabalho3Contract.Participante.COLUMN_NAME_EMAIL,
+                Trabalho3Contract.Participante.COLUMN_NAME_CPF,
+        };
+        String selecao = Trabalho3Contract.Participante._ID + " = ?";
+        String[] args = {String.valueOf(id)};
+        String sort = "";
+        Cursor c = db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, selecao, args, null, null, sort);
+
+        Participante participante = new Participante();
+        int indiceParticipanteID = c.getColumnIndexOrThrow(Trabalho3Contract.Participante._ID);
+        int indiceParticipanteNomeCompleto = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO);
+        int indiceParticipanteEmail = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL);
+        int indiceParticipanteCPF = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_CPF);
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                participante = new Participante();
+                participante.setId(c.getInt(indiceParticipanteID))
+                        .setNomeCompleto(c.getString(indiceParticipanteNomeCompleto))
+                        .setEmail(c.getString(indiceParticipanteEmail))
+                        .setCpf(c.getString(indiceParticipanteCPF));
+            } while (c.moveToNext());
+        }
+
+        return participante;
+    }
+
+    public Evento selectEventoById(Integer id) {
+        String[] visao = {
+                Trabalho3Contract.Evento._ID,
+                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
+                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
+                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
+                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
+                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
+        };
+        String selecao = Trabalho3Contract.Evento._ID + " = ?";
+        String[] args = {String.valueOf(id)};
+        String sort = "";
+        Cursor c = db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, selecao, args, null, null, sort);
+
+        int indiceEventoID = c.getColumnIndexOrThrow(Trabalho3Contract.Evento._ID);
+        int indiceEventoTitulo = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_TITULO);
+        int indiceEventoDia = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_DIA);
+        int indiceEventoHora = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_HORA);
+        int indiceEventoFacilitador = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR);
+        int indiceEventoDescricaoTextual = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL);
+
+        Evento evento = new Evento();
+        if (c != null && c.moveToFirst()) {
+            do {
+                evento = new Evento();
+                evento.setId(c.getInt(indiceEventoID))
+                        .setTitulo(c.getString(indiceEventoTitulo))
+                        .setDia(c.getString(indiceEventoDia))
+                        .setHora(c.getString(indiceEventoHora))
+                        .setFacilitador(c.getString(indiceEventoFacilitador))
+                        .setDescricaoTextual(c.getString(indiceEventoDescricaoTextual));
+            } while (c.moveToNext());
+        }
+
+        return evento;
     }
 }

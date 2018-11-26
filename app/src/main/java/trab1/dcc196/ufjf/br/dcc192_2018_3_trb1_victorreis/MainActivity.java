@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CadastroParticipanteActivity.class);
                 startActivity(intent);
-                //startActivityForResult(intent, REQUEST_CADASTRO_PARTICIPANTE);
             }
         });
 
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CadastroEventoActivity.class);
                 startActivity(intent);
-                //startActivityForResult(intent, REQUEST_CADASTRO_EVENTO);
             }
         });
 
@@ -73,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void OnAdapterParticipanteClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, ExibirDadosParticipanteActivity.class);
-                intent.putExtra(MainActivity.PARTICIPANTE_INDICE, position);
+
+                ArrayList<Participante> participantes = Persistencia.getInstance(getApplicationContext()).selectAllParticipantes();
+                intent.putExtra(MainActivity.PARTICIPANTE_INDICE, (participantes.get(position)).getId());
                 startActivity(intent);
             }
 
@@ -95,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void OnAdapterEventoClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, ExibirDadosEventoActivity.class);
-                intent.putExtra(MainActivity.EVENTO_INDICE, position);
+
+                ArrayList<Evento> eventos = Persistencia.getInstance(getApplicationContext()).selectAllEventos();
+                intent.putExtra(MainActivity.EVENTO_INDICE, (eventos.get(position)).getId());
                 startActivity(intent);
             }
 

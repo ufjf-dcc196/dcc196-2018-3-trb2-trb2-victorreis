@@ -45,8 +45,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
         final Intent intent = getIntent();
         Bundle bundleResult = intent.getExtras();
         participanteIndice = bundleResult.getInt(MainActivity.PARTICIPANTE_INDICE);
-        //participante = Persistencia.getInstanceParticipantes().get(participanteIndice);
-        participante = new Participante();
+        participante = Persistencia.getInstance(getApplicationContext()).selectParticipanteById(participanteIndice);
 
         txtNomeCompleto = (TextView) findViewById(R.id.txt_nome_completo);
         txtNomeCompleto.setText(participante.getNomeCompleto());
