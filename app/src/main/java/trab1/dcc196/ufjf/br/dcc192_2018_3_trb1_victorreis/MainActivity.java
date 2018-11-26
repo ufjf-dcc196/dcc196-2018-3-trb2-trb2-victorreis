@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 Persistencia.getInstance(getApplicationContext()).deleteParticipante(txtNomeCompleto.getText().toString());
 
                 adapterParticipante.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
-                //adapterParticipante.notifyItemRemoved(position);
             }
         });
 
@@ -111,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 Persistencia.getInstance(getApplicationContext()).deleteEvento(txtTitulo.getText().toString());
 
                 adapterEvento.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
-                //adapterEvento.notifyItemRemoved(position);
             }
         });
     }

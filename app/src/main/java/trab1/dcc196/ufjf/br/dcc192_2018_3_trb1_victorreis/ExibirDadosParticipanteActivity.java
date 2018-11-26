@@ -28,15 +28,8 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
     private AdapterEvento adapterParticipandoDosEventos;
     private AdapterEvento adapterEventosRestantes;
 
-    private static final int REQUEST_EDITAR_PARTICIPANTE = 1;
-
-    public static final String PARTICIPANTE_NOME_COMPLETO = "PARTICIPANTE_NOME_COMPLETO";
-    public static final String PARTICIPANTE_EMAIL = "PARTICIPANTE_EMAIL";
-    public static final String PARTICIPANTE_CPF = "PARTICIPANTE_CPF";
-
     private int participanteIndice;
     private Participante participante;
-    //private List<Evento> eventosRestantes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +56,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ExibirDadosParticipanteActivity.this, EditarParticipanteActivity.class);
                 intent.putExtra(MainActivity.PARTICIPANTE_INDICE, participanteIndice);
-                startActivityForResult(intent, REQUEST_EDITAR_PARTICIPANTE);
+                startActivity(intent);
             }
         });
 
@@ -122,24 +115,14 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ExibirDadosParticipanteActivity.REQUEST_EDITAR_PARTICIPANTE) {
-            Bundle bndResultado = data.getExtras();
+    }
 
-            String nomeCompleto = bndResultado.getString(ExibirDadosParticipanteActivity.PARTICIPANTE_NOME_COMPLETO);
-            String email = bndResultado.getString(ExibirDadosParticipanteActivity.PARTICIPANTE_EMAIL);
-            String cpf = bndResultado.getString(ExibirDadosParticipanteActivity.PARTICIPANTE_CPF);
-
-            participante.setNomeCompleto(nomeCompleto);
-            participante.setEmail(email);
-            participante.setCpf(cpf);
-
-            //Persistencia.getInstanceParticipantes().get(participanteIndice).setNomeCompleto(nomeCompleto);
-            //Persistencia.getInstanceParticipantes().get(participanteIndice).setEmail(email);
-            //Persistencia.getInstanceParticipantes().get(participanteIndice).setCpf(cpf);
-
-            txtNomeCompleto.setText(nomeCompleto);
-            txtEmail.setText(email);
-            txtCPF.setText(cpf);
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        participante = Persistencia.getInstance(getApplicationContext()).selectParticipanteById(participanteIndice);
+        txtNomeCompleto.setText(participante.getNomeCompleto());
+        txtEmail.setText(participante.getEmail());
+        txtCPF.setText(participante.getCpf());
     }
 }

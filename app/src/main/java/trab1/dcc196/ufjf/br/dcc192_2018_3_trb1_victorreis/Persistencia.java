@@ -339,4 +339,21 @@ public class Persistencia {
         Log.i("DBINFO", "DEL deleteParticipanteEvento: id_part>" + idParticipante + " ||| id_evento>" + evento.getId());
         return true;
     }
+
+    // -------------------------------------------------
+    // -------------------------------------------------
+    // -------------------------------------------------
+
+    public Participante updateParticipante(Participante participante) {
+        ContentValues values = new ContentValues();
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, participante.getNomeCompleto());
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, participante.getEmail());
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, participante.getCpf());
+
+        String where = Trabalho3Contract.Participante._ID + " = ?";
+        String[] args = {String.valueOf(participante.getId())};
+        db.update(Trabalho3Contract.Participante.TABLE_NAME, values, where, args);
+
+        return participante;
+    }
 }
