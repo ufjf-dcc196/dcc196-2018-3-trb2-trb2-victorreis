@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.Telephony;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,41 +23,58 @@ public class Persistencia {
     }
 
     private void inserirDadosIniciais() {
-        ContentValues values;
+        Participante participante;
+        Evento evento;
 
-        values = new ContentValues();
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, "Victor Reis");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, "v.crisostomo.reis@gmail.com");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, "104.974.436-51");
-        db.insert(Trabalho3Contract.Participante.TABLE_NAME, null, values);
+        participante = new Participante();
+        participante.setNomeCompleto("Victor Reis")
+                .setEmail("v.crisostomo.reis@gmail.com")
+                .setCpf("104.974.436-51");
+        insertParticipante(participante);
 
-        values = new ContentValues();
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, "Fulano de tal");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, "fulano@gmail.com");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, "999.999.999-99");
-        db.insert(Trabalho3Contract.Participante.TABLE_NAME, null, values);
+        participante = new Participante();
+        participante.setNomeCompleto("Fulano de tal")
+                .setEmail("fulano@gmail.com")
+                .setCpf("999.999.999-99");
+        insertParticipante(participante);
 
-        values = new ContentValues();
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, "Ciclano Filho");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, "ciclano@gmail.com");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, "888.888.888-88");
-        db.insert(Trabalho3Contract.Participante.TABLE_NAME, null, values);
+        participante = new Participante();
+        participante.setNomeCompleto("Ciclano Filho")
+                .setEmail("ciclano@gmail.com")
+                .setCpf("888.888.888-88");
+        insertParticipante(participante);
 
-        values = new ContentValues();
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, "Beltrano Júnior");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, "beltrano@gmail.com");
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, "777.777.777-77");
-        db.insert(Trabalho3Contract.Participante.TABLE_NAME, null, values);
+        participante = new Participante();
+        participante.setNomeCompleto("Beltrano Júnior")
+                .setEmail("beltrano@gmail.com")
+                .setCpf("777.777.777-77");
+        insertParticipante(participante);
 
-        // --------------------------------------- //
+        // ------------------------------------------------- //
 
-        values = new ContentValues();
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_TITULO, "aaa");
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DIA, "aaa");
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_HORA, "aaa");
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR, "aaa");
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL, "aaa");
-        db.insert(Trabalho3Contract.Evento.TABLE_NAME, null, values);
+        evento = new Evento();
+        evento.setTitulo("Apresentação de TCC do Victor Reis")
+                .setDia("04/12/2018")
+                .setHora("17:00")
+                .setFacilitador("Marcelo Caniato Renhe")
+                .setDescricaoTextual("ALEA: Sistema de Gestão de Riscos Geotécnicos");
+        insertEvento(evento);
+
+        evento = new Evento();
+        evento.setTitulo("Evento X")
+                .setDia("12/12/2018")
+                .setHora("12:12")
+                .setFacilitador("Zé das Couves")
+                .setDescricaoTextual("O Evento X bla bla bla bla bla bla.");
+        insertEvento(evento);
+
+        evento = new Evento();
+        evento.setTitulo("Evento Y")
+                .setDia("11/11/2018")
+                .setHora("11:11")
+                .setFacilitador("Fulaninho")
+                .setDescricaoTextual("O Evento Y bla bla bla bla bla bla.");
+        insertEvento(evento);
     }
 
     public static Persistencia getInstance(Context context){
@@ -64,6 +82,30 @@ public class Persistencia {
             instance = new Persistencia(context);
         }
         return instance;
+    }
+
+    public Participante insertParticipante(Participante participante) {
+        ContentValues values = new ContentValues();
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, participante.getNomeCompleto());
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, participante.getEmail());
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, participante.getCpf());
+        long id = db.insert(Trabalho3Contract.Participante.TABLE_NAME, null, values);
+
+        participante.setId((int) id);
+        return participante;
+    }
+
+    public Evento insertEvento(Evento evento) {
+        ContentValues values = new ContentValues();
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_TITULO, evento.getTitulo());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DIA, evento.getDia());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_HORA, evento.getHora());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR, evento.getFacilitador());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL, evento.getDescricaoTextual());
+        long id = db.insert(Trabalho3Contract.Evento.TABLE_NAME, null, values);
+
+        evento.setId((int) id);
+        return evento;
     }
 
     public List<Participante> selectAllParticipantes() {
@@ -77,7 +119,8 @@ public class Persistencia {
                 Trabalho3Contract.Participante.COLUMN_NAME_CPF,
         };
         String sort = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " DESC";
-        Cursor c = db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", new String[], null, null, sort);
+        String[] args = {};
+        Cursor c = db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", args, null, null, sort);
 
         int indiceParticipanteNomeCompleto = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO);
         int indiceParticipanteEmail = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL);
@@ -110,7 +153,8 @@ public class Persistencia {
                 Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
         };
         String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
-        Cursor c = db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", new String[], null, null, sort);
+        String[] args = {};
+        Cursor c = db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
 
         int indiceEventoTitulo = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_TITULO);
         int indiceEventoDia = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_DIA);
