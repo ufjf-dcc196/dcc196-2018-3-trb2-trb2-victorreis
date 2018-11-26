@@ -2,6 +2,7 @@ package trab1.dcc196.ufjf.br.dcc192_2018_3_trb1_victorreis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private AdapterParticipante adapterParticipante;
     private AdapterEvento adapterEvento;
-
-    private static final int REQUEST_CADASTRO_PARTICIPANTE = 1;
-    private static final int REQUEST_CADASTRO_EVENTO = 2;
 
     public static final String PARTICIPANTE_INDICE = "PARTICIPANTE_INDICE";
     public static final String EVENTO_INDICE = "EVENTO_INDICE";
@@ -72,8 +70,11 @@ public class MainActivity extends AppCompatActivity {
             public void OnAdapterParticipanteClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, ExibirDadosParticipanteActivity.class);
 
-                ArrayList<Participante> participantes = Persistencia.getInstance(getApplicationContext()).selectAllParticipantes();
-                intent.putExtra(MainActivity.PARTICIPANTE_INDICE, (participantes.get(position)).getId());
+                Cursor cursor = Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor();
+                ArrayList<Participante> participantes = Persistencia.getInstance(getApplicationContext()).transformCursorInArrayListOfParticipantes(cursor);
+                Participante participante = participantes.get(position);
+
+                intent.putExtra(MainActivity.PARTICIPANTE_INDICE, participante.getId());
                 startActivity(intent);
             }
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 Persistencia.getInstance(getApplicationContext()).deleteParticipante(txtNomeCompleto.getText().toString());
 
                 adapterParticipante.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
-                adapterParticipante.notifyItemRemoved(position);
+                //adapterParticipante.notifyItemRemoved(position);
             }
         });
 
@@ -96,8 +97,11 @@ public class MainActivity extends AppCompatActivity {
             public void OnAdapterEventoClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, ExibirDadosEventoActivity.class);
 
-                ArrayList<Evento> eventos = Persistencia.getInstance(getApplicationContext()).selectAllEventos();
-                intent.putExtra(MainActivity.EVENTO_INDICE, (eventos.get(position)).getId());
+                Cursor cursor = Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor();
+                ArrayList<Evento> eventos = Persistencia.getInstance(getApplicationContext()).transformCursorInArrayListOfEventos(cursor);
+                Evento evento = eventos.get(position);
+
+                intent.putExtra(MainActivity.EVENTO_INDICE, evento.getId());
                 startActivity(intent);
             }
 
@@ -107,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 Persistencia.getInstance(getApplicationContext()).deleteEvento(txtTitulo.getText().toString());
 
                 adapterEvento.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
-                adapterEvento.notifyItemRemoved(position);
+                //adapterEvento.notifyItemRemoved(position);
             }
         });
     }
@@ -116,12 +120,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == MainActivity.REQUEST_CADASTRO_PARTICIPANTE) {
-            adapterParticipante.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
-
-        } else if (requestCode == MainActivity.REQUEST_CADASTRO_EVENTO) {
-            adapterEvento.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
-        }
     }
 
     @Override

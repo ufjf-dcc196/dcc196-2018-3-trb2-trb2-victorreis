@@ -1,6 +1,7 @@
 package trab1.dcc196.ufjf.br.dcc192_2018_3_trb1_victorreis;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
     private int participanteIndice;
     private Participante participante;
-    private List<Evento> eventosRestantes;
+    //private List<Evento> eventosRestantes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,6 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
         rvParticipandoDosEventos = (RecyclerView) findViewById(R.id.rv_participando_dos_eventos);
         rvParticipandoDosEventos.setLayoutManager(new LinearLayoutManager(this));
-        //adapterParticipandoDosEventos = new AdapterEvento(participante.getEventos());
         adapterParticipandoDosEventos = new AdapterEvento(Persistencia.getInstance(getApplicationContext()).selectEventosFromParticipanteCursor(participante.getId()));
         rvParticipandoDosEventos.setAdapter(adapterParticipandoDosEventos);
         adapterParticipandoDosEventos.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
@@ -79,11 +79,13 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
-                Evento evento = participante.getEventos().get(position);
-                //Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().remove(evento);
-                eventosRestantes.add(evento);
-                adapterParticipandoDosEventos.notifyDataSetChanged();
-                adapterEventosRestantes.notifyDataSetChanged();
+                Cursor cursor = Persistencia.getInstance(getApplicationContext()).selectEventosFromParticipanteCursor(participante.getId());
+                ArrayList<Evento> eventosDoParticipante = Persistencia.getInstance(getApplicationContext()).transformCursorInArrayListOfEventos(cursor);
+                Evento evento = eventosDoParticipante.get(position);
+
+                Persistencia.getInstance(getApplicationContext()).deleteParticipanteEvento(participante.getId(), evento);
+                adapterParticipandoDosEventos.setCursor(Persistencia.getInstance(getApplicationContext()).selectEventosFromParticipanteCursor(participante.getId()));
+                adapterEventosRestantes.setCursor(Persistencia.getInstance(getApplicationContext()).selectEventosRestantesFromParticipanteCursor(participante.getId()));
 
                 Toast t = Toast.makeText(getApplicationContext(), "Desinscrito do evento.", Toast.LENGTH_LONG);
                 t.show();
@@ -92,12 +94,6 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
         rvEventosRestantes = (RecyclerView) findViewById(R.id.rv_eventos_restantes);
         rvEventosRestantes.setLayoutManager(new LinearLayoutManager(this));
-        eventosRestantes = new ArrayList<>();
-        for (Evento evento : Persistencia.getInstance(getApplicationContext()).selectAllEventos()) {
-            if (!participante.getEventos().contains(evento)) {
-                eventosRestantes.add(evento);
-            }
-        }
         adapterEventosRestantes = new AdapterEvento(Persistencia.getInstance(getApplicationContext()).selectEventosRestantesFromParticipanteCursor(participante.getId()));
         rvEventosRestantes.setAdapter(adapterEventosRestantes);
         adapterEventosRestantes.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
@@ -108,11 +104,13 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
+                Cursor cursor = Persistencia.getInstance(getApplicationContext()).selectEventosRestantesFromParticipanteCursor(participante.getId());
+                ArrayList<Evento> eventosRestantes = Persistencia.getInstance(getApplicationContext()).transformCursorInArrayListOfEventos(cursor);
                 Evento evento = eventosRestantes.get(position);
-                eventosRestantes.remove(evento);
-                //Persistencia.getInstanceParticipantes().get(participanteIndice).getEventos().add(evento);
-                adapterParticipandoDosEventos.notifyDataSetChanged();
-                adapterEventosRestantes.notifyDataSetChanged();
+
+                Persistencia.getInstance(getApplicationContext()).insertParticipanteEvento(participante.getId(), evento);
+                adapterParticipandoDosEventos.setCursor(Persistencia.getInstance(getApplicationContext()).selectEventosFromParticipanteCursor(participante.getId()));
+                adapterEventosRestantes.setCursor(Persistencia.getInstance(getApplicationContext()).selectEventosRestantesFromParticipanteCursor(participante.getId()));
 
                 Toast t = Toast.makeText(getApplicationContext(), "Inscrito no evento.", Toast.LENGTH_LONG);
                 t.show();

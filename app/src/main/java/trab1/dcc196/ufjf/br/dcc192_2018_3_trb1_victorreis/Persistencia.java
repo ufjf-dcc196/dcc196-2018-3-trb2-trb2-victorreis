@@ -93,55 +93,13 @@ public class Persistencia {
         inserirDadosIniciais();
     }
 
-    public Participante insertParticipante(Participante participante) {
-        ContentValues values = new ContentValues();
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, participante.getNomeCompleto());
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, participante.getEmail());
-        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, participante.getCpf());
-        long id = db.insert(Trabalho3Contract.Participante.TABLE_NAME, null, values);
+    // -------------------------------------------------
+    // -------------------------------------------------
+    // -------------------------------------------------
 
-        participante.setId((int) id);
-        return participante;
-    }
-
-    public Evento insertEvento(Evento evento) {
-        ContentValues values = new ContentValues();
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_TITULO, evento.getTitulo());
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DIA, evento.getDia());
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_HORA, evento.getHora());
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR, evento.getFacilitador());
-        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL, evento.getDescricaoTextual());
-        long id = db.insert(Trabalho3Contract.Evento.TABLE_NAME, null, values);
-
-        evento.setId((int) id);
-        return evento;
-    }
-
-    public Cursor selectAllParticipantesCursor() {
-        String[] visao = {
-                Trabalho3Contract.Participante._ID,
-                Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO,
-                Trabalho3Contract.Participante.COLUMN_NAME_EMAIL,
-                Trabalho3Contract.Participante.COLUMN_NAME_CPF,
-        };
-        String sort = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " DESC";
-        String[] args = {};
-        return db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", args, null, null, sort);
-    }
-
-    public ArrayList<Participante> selectAllParticipantes() {
+    public ArrayList<Participante> transformCursorInArrayListOfParticipantes(Cursor c) {
         ArrayList<Participante> participantes = new ArrayList<>();
         Participante participante;
-
-        String[] visao = {
-                Trabalho3Contract.Participante._ID,
-                Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO,
-                Trabalho3Contract.Participante.COLUMN_NAME_EMAIL,
-                Trabalho3Contract.Participante.COLUMN_NAME_CPF,
-        };
-        String sort = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " DESC";
-        String[] args = {};
-        Cursor c = db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", args, null, null, sort);
 
         int indiceParticipanteID = c.getColumnIndexOrThrow(Trabalho3Contract.Participante._ID);
         int indiceParticipanteNomeCompleto = c.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO);
@@ -163,63 +121,9 @@ public class Persistencia {
         return participantes;
     }
 
-    public Cursor selectAllEventosCursor() {
-        String[] visao = {
-                Trabalho3Contract.Evento._ID,
-                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
-                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
-                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
-                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
-                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
-        };
-        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
-        String[] args = {};
-        return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
-    }
-
-    public Cursor selectEventosFromParticipanteCursor(Integer idParticipante) {
-        String[] visao = {
-                Trabalho3Contract.Evento._ID,
-                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
-                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
-                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
-                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
-                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
-        };
-        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
-        String[] args = {};
-        return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
-    }
-
-    public Cursor selectEventosRestantesFromParticipanteCursor(Integer idParticipante) {
-        String[] visao = {
-                Trabalho3Contract.Evento._ID,
-                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
-                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
-                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
-                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
-                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
-        };
-        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
-        String[] args = {};
-        return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
-    }
-
-    public ArrayList<Evento> selectAllEventos() {
+    public ArrayList<Evento> transformCursorInArrayListOfEventos(Cursor c) {
         ArrayList<Evento> eventos = new ArrayList<>();
         Evento evento;
-
-        String[] visao = {
-                Trabalho3Contract.Evento._ID,
-                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
-                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
-                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
-                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
-                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
-        };
-        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
-        String[] args = {};
-        Cursor c = db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
 
         int indiceEventoID = c.getColumnIndexOrThrow(Trabalho3Contract.Evento._ID);
         int indiceEventoTitulo = c.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_TITULO);
@@ -245,20 +149,98 @@ public class Persistencia {
         return eventos;
     }
 
-    public boolean deleteParticipante(String nomeCompleto) {
-        String select = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " = ?";
-        String[] selectArgs = {nomeCompleto};
-        db.delete(Trabalho3Contract.Participante.TABLE_NAME,select,selectArgs);
-        Log.i("DBINFO", "DEL nome_completo: " + nomeCompleto);
-        return true;
+    // -------------------------------------------------
+    // -------------------------------------------------
+    // -------------------------------------------------
+
+    public Participante insertParticipante(Participante participante) {
+        ContentValues values = new ContentValues();
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO, participante.getNomeCompleto());
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_EMAIL, participante.getEmail());
+        values.put(Trabalho3Contract.Participante.COLUMN_NAME_CPF, participante.getCpf());
+        long id = db.insert(Trabalho3Contract.Participante.TABLE_NAME, null, values);
+
+        participante.setId((int) id);
+        return participante;
     }
 
-    public boolean deleteEvento(String titulo) {
-        String select = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " = ?";
-        String[] selectArgs = {titulo};
-        db.delete(Trabalho3Contract.Evento.TABLE_NAME,select,selectArgs);
-        Log.i("DBINFO", "DEL titulo: " + titulo);
-        return true;
+    public Evento insertEvento(Evento evento) {
+        ContentValues values = new ContentValues();
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_TITULO, evento.getTitulo());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DIA, evento.getDia());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_HORA, evento.getHora());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR, evento.getFacilitador());
+        values.put(Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL, evento.getDescricaoTextual());
+        long id = db.insert(Trabalho3Contract.Evento.TABLE_NAME, null, values);
+
+        evento.setId((int) id);
+        return evento;
+    }
+
+    public ParticipanteEvento insertParticipanteEvento(Integer idParticipante, Evento evento) {
+        ContentValues values = new ContentValues();
+        values.put(Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_PARTICIPANTE_ID, idParticipante);
+        values.put(Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_EVENTO_ID, evento.getId());
+        long id = db.insert(Trabalho3Contract.ParticipanteEvento.TABLE_NAME, null, values);
+
+        ParticipanteEvento participanteEvento = new ParticipanteEvento();
+        participanteEvento.setId((int) id)
+                .setParticipanteId(idParticipante)
+                .setEventoId(evento.getId());
+        return participanteEvento;
+    }
+
+    // -------------------------------------------------
+    // -------------------------------------------------
+    // -------------------------------------------------
+
+    public Cursor selectAllParticipantesCursor() {
+        String[] visao = {
+                Trabalho3Contract.Participante._ID,
+                Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO,
+                Trabalho3Contract.Participante.COLUMN_NAME_EMAIL,
+                Trabalho3Contract.Participante.COLUMN_NAME_CPF,
+        };
+        String sort = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " DESC";
+        String[] args = {};
+        return db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", args, null, null, sort);
+    }
+
+    public Cursor selectAllEventosCursor() {
+        String[] visao = {
+                Trabalho3Contract.Evento._ID,
+                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
+                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
+                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
+                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
+                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
+        };
+        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
+        String[] args = {};
+        return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
+    }
+
+    public Cursor selectEventosFromParticipanteCursor(Integer idParticipante) {
+//        String query = "SELECT * " +
+//                "FROM " + Trabalho3Contract.ParticipanteEvento.TABLE_NAME + " AS pe, "
+//                + Trabalho3Contract.Evento.TABLE_NAME + " AS e " +
+//                "WHERE pe." + Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_PARTICIPANTE_ID + " = ? "
+//                + "AND e." + Trabalho3Contract.Evento._ID + " = pe." + Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_EVENTO_ID;
+        String query = "SELECT * FROM evento WHERE _id IN (SELECT pe.evento_id FROM participante_evento pe INNER JOIN evento e ON pe.evento_id = e._id WHERE pe.participante_id = ?)";
+        String[] args = {String.valueOf(idParticipante)};
+        return db.rawQuery(query, args);
+    }
+
+    public Cursor selectEventosRestantesFromParticipanteCursor(Integer idParticipante) {
+//        String query = "SELECT * " +
+//                "FROM " + Trabalho3Contract.ParticipanteEvento.TABLE_NAME + " AS pe, "
+//                + Trabalho3Contract.Evento.TABLE_NAME + " AS e " +
+//                "WHERE pe." + Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_PARTICIPANTE_ID + " != ? "
+//                + "AND e." + Trabalho3Contract.Evento._ID + " = pe." + Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_EVENTO_ID;
+        String query = "SELECT * FROM evento WHERE _id NOT IN (SELECT pe.evento_id FROM participante_evento pe INNER JOIN evento e ON pe.evento_id = e._id WHERE pe.participante_id = ?)";
+        String[] args = {String.valueOf(idParticipante)};
+        //String[] args = {};
+        return db.rawQuery(query, args);
     }
 
     public Participante selectParticipanteById(Integer id) {
@@ -327,5 +309,34 @@ public class Persistencia {
         }
 
         return evento;
+    }
+
+    // -------------------------------------------------
+    // -------------------------------------------------
+    // -------------------------------------------------
+
+    public boolean deleteParticipante(String nomeCompleto) {
+        String select = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " = ?";
+        String[] selectArgs = {nomeCompleto};
+        db.delete(Trabalho3Contract.Participante.TABLE_NAME,select,selectArgs);
+        Log.i("DBINFO", "DEL nome_completo: " + nomeCompleto);
+        return true;
+    }
+
+    public boolean deleteEvento(String titulo) {
+        String select = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " = ?";
+        String[] selectArgs = {titulo};
+        db.delete(Trabalho3Contract.Evento.TABLE_NAME,select,selectArgs);
+        Log.i("DBINFO", "DEL titulo: " + titulo);
+        return true;
+    }
+
+    public boolean deleteParticipanteEvento(Integer idParticipante, Evento evento) {
+        String select = Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_PARTICIPANTE_ID + " = ? " +
+                " AND " + Trabalho3Contract.ParticipanteEvento.COLUMN_NAME_EVENTO_ID + " = ? ";
+        String[] selectArgs = {String.valueOf(idParticipante), String.valueOf(evento.getId())};
+        db.delete(Trabalho3Contract.ParticipanteEvento.TABLE_NAME,select,selectArgs);
+        Log.i("DBINFO", "DEL deleteParticipanteEvento: id_part>" + idParticipante + " ||| id_evento>" + evento.getId());
+        return true;
     }
 }
