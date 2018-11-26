@@ -41,11 +41,11 @@ public class CadastroParticipanteActivity extends AppCompatActivity {
                     return;
                 }
 
-                Intent intentCadastroParticipante = new Intent();
-                intentCadastroParticipante.putExtra(MainActivity.PARTICIPANTE_NOME_COMPLETO, edtNomeCompleto.getText().toString());
-                intentCadastroParticipante.putExtra(MainActivity.PARTICIPANTE_EMAIL, edtEmail.getText().toString());
-                intentCadastroParticipante.putExtra(MainActivity.PARTICIPANTE_CPF, edtCPF.getText().toString());
-                setResult(Activity.RESULT_OK, intentCadastroParticipante);
+                Participante participante = new Participante();
+                participante.setNomeCompleto(edtNomeCompleto.getText().toString())
+                        .setEmail(edtEmail.getText().toString())
+                        .setCpf(edtCPF.getText().toString());
+                Persistencia.getInstance(getApplicationContext()).insertParticipante(participante);
                 finish();
             }
         });

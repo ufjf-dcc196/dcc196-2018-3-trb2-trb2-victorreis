@@ -46,14 +46,13 @@ public class CadastroEventoActivity extends AppCompatActivity {
                     return;
                 }
 
-                Intent intentCadastroEvento = new Intent();
-
-                intentCadastroEvento.putExtra(MainActivity.EVENTO_TITULO, edtTitulo.getText().toString());
-                intentCadastroEvento.putExtra(MainActivity.EVENTO_DIA, edtDia.getText().toString());
-                intentCadastroEvento.putExtra(MainActivity.EVENTO_HORA, edtHora.getText().toString());
-                intentCadastroEvento.putExtra(MainActivity.EVENTO_FACILITADOR, edtFacilitador.getText().toString());
-                intentCadastroEvento.putExtra(MainActivity.EVENTO_DESCRICAO_TEXTUAL, edtDescricaoTextual.getText().toString());
-                setResult(Activity.RESULT_OK, intentCadastroEvento);
+                Evento evento = new Evento();
+                evento.setTitulo(edtTitulo.getText().toString())
+                        .setDia(edtDia.getText().toString())
+                        .setHora(edtHora.getText().toString())
+                        .setFacilitador(edtFacilitador.getText().toString())
+                        .setDescricaoTextual(edtDescricaoTextual.getText().toString());
+                Persistencia.getInstance(getApplicationContext()).insertEvento(evento);
                 finish();
             }
         });

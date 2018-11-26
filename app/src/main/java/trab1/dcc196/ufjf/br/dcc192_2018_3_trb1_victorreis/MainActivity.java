@@ -30,16 +30,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String PARTICIPANTE_INDICE = "PARTICIPANTE_INDICE";
     public static final String EVENTO_INDICE = "EVENTO_INDICE";
 
-    public static final String PARTICIPANTE_NOME_COMPLETO = "PARTICIPANTE_NOME_COMPLETO";
-    public static final String PARTICIPANTE_EMAIL = "PARTICIPANTE_EMAIL";
-    public static final String PARTICIPANTE_CPF = "PARTICIPANTE_CPF";
-
-    public static final String EVENTO_TITULO = "EVENTO_TITULO";
-    public static final String EVENTO_DIA = "EVENTO_DIA";
-    public static final String EVENTO_HORA = "EVENTO_HORA";
-    public static final String EVENTO_FACILITADOR = "EVENTO_FACILITADOR";
-    public static final String EVENTO_DESCRICAO_TEXTUAL = "EVENTO_DESCRICAO_TEXTUAL";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CadastroParticipanteActivity.class);
-                startActivityForResult(intent, REQUEST_CADASTRO_PARTICIPANTE);
+                startActivity(intent);
+                //startActivityForResult(intent, REQUEST_CADASTRO_PARTICIPANTE);
             }
         });
 
@@ -59,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CadastroEventoActivity.class);
-                startActivityForResult(intent, REQUEST_CADASTRO_EVENTO);
+                startActivity(intent);
+                //startActivityForResult(intent, REQUEST_CADASTRO_EVENTO);
             }
         });
 
@@ -123,35 +115,17 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == MainActivity.REQUEST_CADASTRO_PARTICIPANTE) {
-            Bundle bndResultado = data.getExtras();
-
-            String nomeCompleto = bndResultado.getString(MainActivity.PARTICIPANTE_NOME_COMPLETO);
-            String email = bndResultado.getString(MainActivity.PARTICIPANTE_EMAIL);
-            String cpf = bndResultado.getString(MainActivity.PARTICIPANTE_CPF);
-
-            Participante participante = new Participante(nomeCompleto, email, cpf);
-            //Persistencia.getInstanceParticipantes().add(participante);
-            adapterParticipante.notifyDataSetChanged();
+            adapterParticipante.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
 
         } else if (requestCode == MainActivity.REQUEST_CADASTRO_EVENTO) {
-            Bundle bndResultado = data.getExtras();
-
-            String titulo = bndResultado.getString(MainActivity.EVENTO_TITULO);
-            String dia = bndResultado.getString(MainActivity.EVENTO_DIA);
-            String hora = bndResultado.getString(MainActivity.EVENTO_HORA);
-            String facilitador = bndResultado.getString(MainActivity.EVENTO_FACILITADOR);
-            String descricaoTextual = bndResultado.getString(MainActivity.EVENTO_DESCRICAO_TEXTUAL);
-
-            Evento evento = new Evento(titulo, dia, hora, facilitador, descricaoTextual);
-            //Persistencia.getInstanceEventos().add(evento);
-            adapterEvento.notifyDataSetChanged();
+            adapterEvento.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        adapterParticipante.notifyDataSetChanged();
-        adapterEvento.notifyDataSetChanged();
+        adapterParticipante.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
+        adapterEvento.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
     }
 }
