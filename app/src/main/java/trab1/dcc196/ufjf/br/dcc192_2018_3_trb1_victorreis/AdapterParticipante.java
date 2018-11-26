@@ -1,6 +1,7 @@
 package trab1.dcc196.ufjf.br.dcc192_2018_3_trb1_victorreis;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,22 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipante.ViewHolder> {
-    private List<Participante> participantes = new ArrayList<>();
     private OnAdapterParticipanteClickListener listener;
+    private Cursor cursor;
 
-//    private Cursor cursor;
-//
-//    public AdapterParticipante(Cursor c){
-//        cursor = c;
-//    }
-//
-//    public void setCursor(Cursor c){
-//        cursor = c;
-//        notifyDataSetChanged();
-//    }
+    public AdapterParticipante(Cursor c){
+        cursor = c;
+    }
 
-    public AdapterParticipante(List<Participante> participantes) {
-        this.participantes = participantes;
+    public void setCursor(Cursor c){
+        cursor = c;
+        notifyDataSetChanged();
     }
 
     public interface OnAdapterParticipanteClickListener {
@@ -51,12 +46,14 @@ public class AdapterParticipante extends RecyclerView.Adapter<AdapterParticipant
 
     @Override
     public void onBindViewHolder(@NonNull AdapterParticipante.ViewHolder viewHolder, int i) {
-        viewHolder.txtNomeCompleto.setText(participantes.get(i).getNomeCompleto());
+        int columnIndexNomeCompleto = cursor.getColumnIndexOrThrow(Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO);
+        cursor.moveToPosition(i);
+        viewHolder.txtNomeCompleto.setText(cursor.getString(columnIndexNomeCompleto));
     }
 
     @Override
     public int getItemCount() {
-        return participantes.size();
+        return cursor.getCount();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

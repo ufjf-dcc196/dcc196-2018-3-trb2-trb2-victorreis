@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -67,13 +68,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Persistencia.getInstance(getApplicationContext()).inserirResetarDadosIniciais();
-
+                adapterParticipante.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
+                adapterEvento.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
             }
         });
 
         rvTodosParticipantes = (RecyclerView) findViewById(R.id.rv_todos_participantes);
         rvTodosParticipantes.setLayoutManager(new LinearLayoutManager(this));
-        adapterParticipante = new AdapterParticipante(Persistencia.getInstance(getApplicationContext()).selectAllParticipantes());
+        adapterParticipante = new AdapterParticipante(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
         rvTodosParticipantes.setAdapter(adapterParticipante);
         adapterParticipante.setOnAdapterParticipanteClickListener(new AdapterParticipante.OnAdapterParticipanteClickListener() {
             @Override
@@ -85,15 +87,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void OnAdapterParticipanteClickLong(View view, int position) {
-//                Persistencia.getInstanceParticipantes().get(position).getEventos().clear();
-//                Persistencia.getInstanceParticipantes().remove(position);
+                TextView txtNomeCompleto = (TextView) view.findViewById(R.id.txt_nome_completo);
+                Persistencia.getInstance(getApplicationContext()).deleteParticipante(txtNomeCompleto.getText().toString());
+
+                adapterParticipante.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllParticipantesCursor());
                 adapterParticipante.notifyItemRemoved(position);
             }
         });
 
         rvTodosEventos = (RecyclerView) findViewById(R.id.rv_todos_eventos);
         rvTodosEventos.setLayoutManager(new LinearLayoutManager(this));
-        adapterEvento = new AdapterEvento(Persistencia.getInstance(getApplicationContext()).selectAllEventos());
+        adapterEvento = new AdapterEvento(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
         rvTodosEventos.setAdapter(adapterEvento);
         adapterEvento.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
             @Override
@@ -105,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void OnAdapterEventoClickLong(View view, int position) {
-                for (Participante participante : Persistencia.getInstance(getApplicationContext()).selectAllParticipantes()) {
-                    //participante.getEventos().remove(Persistencia.getInstanceEventos().get(position));
-                }
-                //Persistencia.getInstanceEventos().remove(position);
+                TextView txtTitulo = (TextView) view.findViewById(R.id.txt_titulo);
+                Persistencia.getInstance(getApplicationContext()).deleteEvento(txtTitulo.getText().toString());
+
+                adapterEvento.setCursor(Persistencia.getInstance(getApplicationContext()).selectAllEventosCursor());
                 adapterEvento.notifyItemRemoved(position);
             }
         });

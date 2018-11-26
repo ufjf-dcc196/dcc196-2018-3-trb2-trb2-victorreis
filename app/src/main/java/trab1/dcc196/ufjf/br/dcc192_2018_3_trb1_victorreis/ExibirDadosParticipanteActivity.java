@@ -69,7 +69,8 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
 
         rvParticipandoDosEventos = (RecyclerView) findViewById(R.id.rv_participando_dos_eventos);
         rvParticipandoDosEventos.setLayoutManager(new LinearLayoutManager(this));
-        adapterParticipandoDosEventos = new AdapterEvento(participante.getEventos());
+        //adapterParticipandoDosEventos = new AdapterEvento(participante.getEventos());
+        adapterParticipandoDosEventos = new AdapterEvento(Persistencia.getInstance(getApplicationContext()).selectEventosFromParticipanteCursor(participante.getId()));
         rvParticipandoDosEventos.setAdapter(adapterParticipandoDosEventos);
         adapterParticipandoDosEventos.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
             @Override
@@ -98,7 +99,7 @@ public class ExibirDadosParticipanteActivity extends AppCompatActivity {
                 eventosRestantes.add(evento);
             }
         }
-        adapterEventosRestantes = new AdapterEvento(eventosRestantes);
+        adapterEventosRestantes = new AdapterEvento(Persistencia.getInstance(getApplicationContext()).selectEventosRestantesFromParticipanteCursor(participante.getId()));
         rvEventosRestantes.setAdapter(adapterEventosRestantes);
         adapterEventosRestantes.setOnAdapterEventoClickListener(new AdapterEvento.OnAdapterEventoClickListener() {
             @Override

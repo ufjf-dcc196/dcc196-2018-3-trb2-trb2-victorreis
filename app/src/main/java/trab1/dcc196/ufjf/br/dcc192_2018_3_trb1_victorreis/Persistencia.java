@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.Telephony;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +121,18 @@ public class Persistencia {
         return evento;
     }
 
+    public Cursor selectAllParticipantesCursor() {
+        String[] visao = {
+                Trabalho3Contract.Participante._ID,
+                Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO,
+                Trabalho3Contract.Participante.COLUMN_NAME_EMAIL,
+                Trabalho3Contract.Participante.COLUMN_NAME_CPF,
+        };
+        String sort = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " DESC";
+        String[] args = {};
+        return db.query(Trabalho3Contract.Participante.TABLE_NAME, visao, "", args, null, null, sort);
+    }
+
     public List<Participante> selectAllParticipantes() {
         ArrayList<Participante> participantes = new ArrayList<>();
         Participante participante;
@@ -150,6 +163,48 @@ public class Persistencia {
         }
 
         return participantes;
+    }
+
+    public Cursor selectAllEventosCursor() {
+        String[] visao = {
+                Trabalho3Contract.Evento._ID,
+                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
+                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
+                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
+                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
+                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
+        };
+        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
+        String[] args = {};
+        return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
+    }
+
+    public Cursor selectEventosFromParticipanteCursor(Integer idParticipante) {
+        String[] visao = {
+                Trabalho3Contract.Evento._ID,
+                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
+                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
+                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
+                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
+                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
+        };
+        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
+        String[] args = {};
+        return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
+    }
+
+    public Cursor selectEventosRestantesFromParticipanteCursor(Integer idParticipante) {
+        String[] visao = {
+                Trabalho3Contract.Evento._ID,
+                Trabalho3Contract.Evento.COLUMN_NAME_TITULO,
+                Trabalho3Contract.Evento.COLUMN_NAME_DIA,
+                Trabalho3Contract.Evento.COLUMN_NAME_HORA,
+                Trabalho3Contract.Evento.COLUMN_NAME_FACILITADOR,
+                Trabalho3Contract.Evento.COLUMN_NAME_DESCRICAO_TEXTUAL,
+        };
+        String sort = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " DESC";
+        String[] args = {};
+        return db.query(Trabalho3Contract.Evento.TABLE_NAME, visao, "", args, null, null, sort);
     }
 
     public List<Evento> selectAllEventos() {
@@ -188,5 +243,21 @@ public class Persistencia {
         }
 
         return eventos;
+    }
+
+    public boolean deleteParticipante(String nomeCompleto) {
+        String select = Trabalho3Contract.Participante.COLUMN_NAME_NOME_COMPLETO + " = ?";
+        String[] selectArgs = {nomeCompleto};
+        db.delete(Trabalho3Contract.Participante.TABLE_NAME,select,selectArgs);
+        Log.i("DBINFO", "DEL nome_completo: " + nomeCompleto);
+        return true;
+    }
+
+    public boolean deleteEvento(String titulo) {
+        String select = Trabalho3Contract.Evento.COLUMN_NAME_TITULO + " = ?";
+        String[] selectArgs = {titulo};
+        db.delete(Trabalho3Contract.Evento.TABLE_NAME,select,selectArgs);
+        Log.i("DBINFO", "DEL titulo: " + titulo);
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package trab1.dcc196.ufjf.br.dcc192_2018_3_trb1_victorreis;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,22 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder> {
-    private List<Evento> eventos = new ArrayList<>();
     private OnAdapterEventoClickListener listener;
+    private Cursor cursor;
 
-//    private Cursor cursor;
-//
-//    public AdapterParticipante(Cursor c){
-//        cursor = c;
-//    }
-//
-//    public void setCursor(Cursor c){
-//        cursor = c;
-//        notifyDataSetChanged();
-//    }
+    public AdapterEvento(Cursor c){
+        cursor = c;
+    }
 
-    public AdapterEvento(List<Evento> eventos) {
-        this.eventos = eventos;
+    public void setCursor(Cursor c){
+        cursor = c;
+        notifyDataSetChanged();
     }
 
     public interface OnAdapterEventoClickListener {
@@ -51,12 +46,14 @@ public class AdapterEvento extends RecyclerView.Adapter<AdapterEvento.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull AdapterEvento.ViewHolder viewHolder, int i) {
-        viewHolder.txtTitulo.setText(eventos.get(i).getTitulo());
+        int columnIndexTitulo = cursor.getColumnIndexOrThrow(Trabalho3Contract.Evento.COLUMN_NAME_TITULO);
+        cursor.moveToPosition(i);
+        viewHolder.txtTitulo.setText(cursor.getString(columnIndexTitulo));
     }
 
     @Override
     public int getItemCount() {
-        return eventos.size();
+        return cursor.getCount();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
