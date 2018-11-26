@@ -311,6 +311,12 @@ public class Persistencia {
         return evento;
     }
 
+    public Cursor selectAllParticipantesDoEvento(Integer idEvento) {
+        String query = "SELECT * FROM participante WHERE _id IN (SELECT pe.participante_id FROM participante_evento pe INNER JOIN participante p ON pe.participante_id = p._id WHERE pe.evento_id = ?)";
+        String[] args = {String.valueOf(idEvento)};
+        return db.rawQuery(query, args);
+    }
+
     // -------------------------------------------------
     // -------------------------------------------------
     // -------------------------------------------------
